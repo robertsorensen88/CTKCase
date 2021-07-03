@@ -8,7 +8,7 @@ searchButton.addEventListener("click" , function(){
     fetch(
     "https://api.openweathermap.org/data/2.5/weather?q=" +
       inputValue.value +
-      "&units=metric&lang=sv&appid=30bf8fd456daf720ce8448f13678dae1"
+      "&units=metric&lang=en&appid=30bf8fd456daf720ce8448f13678dae1"
     )
     .then((response) => response.json())
     .then((data) => {
@@ -24,19 +24,16 @@ searchButton.addEventListener("click" , function(){
         let latitude = data["coord"]["lat"];
 
         let weatherHeader = document.createElement("h1");
-        let cityNames = document.createElement("h2");
         let temp = document.createElement("p");
         let desc = document.createElement("p");
         let imgicon = document.createElement("img");
         let weatherOutput = document.createElement("div");
 
         weatherHeader.id = "hId";
-        weatherHeader.innerHTML = "Weather";
+        weatherHeader.innerHTML = "Current weather in " + cityName;
         weatherOutput.id = "weatherOutput";
         weatherOutput.className =
           "d-flex mw-50 flex-column justify-content-center border border-primary rounded";
-        cityName.id = "wId";
-        cityNames.innerHTML = cityName;
         temp.id = "tId";
         temp.innerHTML = currentTemperature + " °C";
         desc.id = "dId";
@@ -46,7 +43,6 @@ searchButton.addEventListener("click" , function(){
 
         contentfield.appendChild(weatherHeader)
         weatherOutput.appendChild(imgicon)
-        weatherOutput.appendChild(cityNames);
         weatherOutput.appendChild(temp);
         weatherOutput.appendChild(desc);
         contentfield.appendChild(weatherOutput);
@@ -56,7 +52,7 @@ searchButton.addEventListener("click" , function(){
     fetch(
       "https://api.openweathermap.org/data/2.5/forecast?q=" +
         inputValue.value +
-        "&units=metric&lang=sv&appid=30bf8fd456daf720ce8448f13678dae1"
+        "&units=metric&lang=en&appid=30bf8fd456daf720ce8448f13678dae1"
     )
     .then((response) => response.json())
     .then((data) => {
@@ -65,7 +61,21 @@ searchButton.addEventListener("click" , function(){
       console.log(data["list"][16]["dt_txt"]);
       console.log(data["list"][24]["dt_txt"]);
       console.log(data["list"][32]["dt_txt"]);
-      const weatherForecastFiveDaysDates = [data["list"][0]["dt_txt"], data["list"][8]["dt_txt"], data["list"][16]["dt_txt"], data["list"][24]["dt_txt"], data["list"][32]["dt_txt"]]
+      let weatherForecastFiveDaysDates = []; 
+
+      for (let index = 0; index < data["list"].length; index++) {
+       let splitDate = data["list"][index]["dt_txt"].split(" ")
+        console.log(splitDate[1])
+          if (splitDate[1] == "12:00:00") {
+          weatherForecastFiveDaysDates.push(data["list"][index]["dt_txt"]);
+          }
+       
+      }
+      for (let index = 0; index < weatherForecastFiveDaysDates.length; index++) {
+        console.log(weatherForecastFiveDaysDates[index])
+        
+      }
+     
       const weatherForecastFiveDaysTemperature = [
         data["list"][0]["main"]["temp"],
         data["list"][8]["main"]["temp"],
@@ -73,8 +83,24 @@ searchButton.addEventListener("click" , function(){
         data["list"][24]["main"]["temp"],
         data["list"][32]["main"]["temp"],
       ];
+      const weatherForecastForecastIcon = [
+        data["list"][0]["weather"][0]["icon"],
+        data["list"][8]["weather"][0]["icon"],
+        data["list"][16]["weather"][0]["icon"],
+        data["list"][24]["weather"][0]["icon"],
+        data["list"][32]["weather"][0]["icon"],
+      ];
+      const weatherForecastDescription = [
+        data["list"][0]["weather"][0]["description"],
+        data["list"][8]["weather"][0]["description"],
+        data["list"][16]["weather"][0]["description"],
+        data["list"][24]["weather"][0]["icon"],
+        data["list"][32]["weather"][0]["icon"],
+      ];
       let forecastHeader = document.createElement("h3");
       forecastHeader.innerHTML= "Five days forecast";
+      forecastHeader.id ="forecastHeader";
+      forecastHeader.className="mt-5"
 
       contentfield.appendChild(forecastHeader);
 
@@ -83,18 +109,23 @@ searchButton.addEventListener("click" , function(){
         const getWeatherForecastTemperature = weatherForecastFiveDaysTemperature[index];
         let forecastOutput = document.createElement("div");
         let forecastTemperature = document.createElement("p");
-        let forecastDate = document.createElement("p");
+        let forecastDate = document.createElement("h6");
+        let forecastIcon = document.createElement("img");
 
         let getDate = getWeatherForecastDate.split(" ");
 
+        forecastIcon.src = "http://openweathermap.org/img/w/" + weatherForecastForecastIcon[index] + ".png";
+        forecastIcon.id ="iID";
         forecastOutput.id = "forecastWindows";
         forecastOutput.className =
           "m-4 d-flex mw-50 flex-column justify-content-center border border-primary rounded";
         forecastTemperature.innerHTML =
           parseInt(getWeatherForecastTemperature) + " °C";
         forecastDate.innerHTML = getDate[0];
+        forecastDate.id = "forecastDate"
 
-        forecastOutput.appendChild(forecastDate);
+        contentfield.appendChild(forecastDate);
+        forecastOutput.appendChild(forecastIcon);
         forecastOutput.appendChild(forecastTemperature);
         contentfield.appendChild(forecastOutput);
       }
@@ -107,11 +138,18 @@ function removeElement() {
   let removeWeather = document.querySelectorAll("#weatherOutput");
   let removeHeader = document.querySelectorAll("#hId");
   let removeForecast = document.querySelectorAll("#forecastWindows");
+  let removeForecastHeader = document.querySelectorAll("#forecastHeader");
+  let removeForecastDate = document.querySelectorAll("#forecastDate");
 
-
-for (var x = 0; x < removeForecast.length; x++) {
+  for (var x = 0; x < removeForecastDate.length; x++) {
+    removeForecastDate[x].remove();
+  }
+  for (var x = 0; x < removeForecastHeader.length; x++) {
+    removeForecastHeader[x].remove();
+  }
+  for (var x = 0; x < removeForecast.length; x++) {
   removeForecast[x].remove();
-}
+  }
   for (var x = 0; x < removeWeather.length; x++) {
     removeWeather[x].remove();
   }
