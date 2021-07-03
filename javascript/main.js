@@ -2,7 +2,12 @@ let searchButton = document.querySelector('#btn')
 let inputValue = document.querySelector('#inputValue')
 let contentfield = document.querySelector('#main-content')
 
-
+inputValue.addEventListener("keyup", function(event){
+  if (event.keyCode === 13){
+    event.preventDefault();
+    document.getElementById("btn").click();
+  }
+});
 searchButton.addEventListener("click" , function(){
 
     fetch(
