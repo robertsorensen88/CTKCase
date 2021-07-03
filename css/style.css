@@ -1,0 +1,13 @@
+#weatherOutput * {
+  justify-content: center;
+}
+#main-content {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%; 
+    text-align: center;
+}
+#iID{
+    max-width: 50px;
+    margin: auto;
+}
