@@ -2,14 +2,15 @@ let searchButton = document.querySelector('#btn')
 let inputValue = document.querySelector('#inputValue')
 let contentfield = document.querySelector('#main-content')
 
+//if user press enter trigger clickevent on button
 inputValue.addEventListener("keyup", function(event){
   if (event.keyCode === 13){
     event.preventDefault();
     document.getElementById("btn").click();
   }
 });
+//when buttonclick fetch api. 
 searchButton.addEventListener("click" , function(){
-
     fetch(
     "https://api.openweathermap.org/data/2.5/weather?q=" +
       inputValue.value +
@@ -18,8 +19,10 @@ searchButton.addEventListener("click" , function(){
     .then((response) => response.json())
     .then((data) => {
         console.log(data)
+        //calling function remove element
         removeElement();
 
+        //get all elements
         let cityName = data["name"];
         let country = data["sys"]["country"]
         let currentTemperature = parseInt(data["main"]["temp"]);
@@ -31,6 +34,7 @@ searchButton.addEventListener("click" , function(){
         let icon = data["weather"][0]["icon"];
         let iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
 
+        // creates all elements
         let weatherHeader = document.createElement("h1");
         let temperature = document.createElement("p");
         let feelsLike = document.createElement("p");
@@ -42,7 +46,8 @@ searchButton.addEventListener("click" , function(){
         let imgicon = document.createElement("img");
         let weatherOutput = document.createElement("div");
         let feelsLikeHeader = document.createElement("h5");
-         
+
+         // take degree in number and convert it to text
           if(currentWindDirection > 348.75 || currentWindDirection < 11.25) 
             currentWindDirection = "N";
 
@@ -92,14 +97,14 @@ searchButton.addEventListener("click" , function(){
              currentWindDirection = "NNW";
         
         console.log(currentWindDirection)
+        // give different elements values from openweather
         weatherHeader.id = "hId";
         weatherHeader.innerHTML = cityName + ", " + country;
         weatherOutput.id = "weatherOutput";
         weatherOutput.className =
           "d-flex mw-50 flex-column justify-content-center border border-primary border-2 rounded opacity-3";
         feelsLikeHeader.innerHTML= "Feels Like";
-        feelsLikeHeader.classList= "border-top border-dark pt-3"
-        
+        feelsLikeHeader.classList= "border-top border-dark pt-3"        
         feelsLike.innerHTML = currentFeelsLike + " °C";
         feelsLike.classList = "h4";
         temperature.className ="h3";
@@ -114,6 +119,7 @@ searchButton.addEventListener("click" , function(){
         windHeader.className="border-top border-dark pt-3"
         windInfo.innerHTML = "Direction: " + currentWindDirection + "<br> Speed: " + currentWindSpeed + " m/s"
 
+        // add elements inside contentfield
         contentfield.appendChild(weatherHeader)
         weatherOutput.appendChild(imgicon)
         weatherOutput.appendChild(temperature);
@@ -126,8 +132,10 @@ searchButton.addEventListener("click" , function(){
         weatherOutput.appendChild(feelsLike);
         contentfield.appendChild(weatherOutput);
     })
+    //if no city exists
     .catch((error) => alert("There is no city like that!"))
 
+    // fetching 5days forecast
     fetch(
       "https://api.openweathermap.org/data/2.5/forecast?q=" +
         inputValue.value +
@@ -141,6 +149,7 @@ searchButton.addEventListener("click" , function(){
       console.log(data["list"][24]["dt_txt"]);
       console.log(data["list"][32]["dt_txt"]);
 
+      //make arrays so we can push in values when splidate value is equal to 12:00:00
       let weatherForecastFiveDaysDates = []; 
       let weatherForecastFiveDaysTemperature = [];
       let weatherForecastForecastIcon = [];
