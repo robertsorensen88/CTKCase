@@ -1,3 +1,7 @@
+html{
+  padding: 0;
+  margin: 0;
+}
 #weatherOutput * {
   justify-content: center;
 }
@@ -6,8 +10,59 @@
     margin-right: auto;
     width: 50%; 
     text-align: center;
+    padding: 25px;
+    border-radius: 20px;
+}
+#btn{
+  background-color: rgba(255, 255, 255, 1);
+  transition-duration: 0.5s;
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-left-color: black !important;
+  border-bottom-right-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+#btn:hover{
+  background-color: rgba(0, 247, 255, 0.466);
+  border-color: rgba(0, 247, 255, 0.466);
+  
+  border-left: black 1px solid!important;
 }
 #iID{
     max-width: 50px;
     margin: auto;
+}
+#inputValue{
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-bottom-left-radius: 15px !important;
+  border-top-left-radius: 15px !important;
+}
+#inputValue:focus{
+  outline: none;
+}
+
+#header{
+  padding-left: auto;
+  padding-right: auto;
+  background-color:rgba(231, 231, 231, 0.5);
+ 
+  border: 1px solid gray;
+  padding: 2px;
+}
+body{
+  background: linear-gradient(
+    to bottom right,
+    rgb(0, 204, 255) 0%,
+    rgb(0, 174, 255) 50%,
+    rgb(17, 0, 255) 100%
+  );
+}
+.opacity-3{
+ background-color:rgba(231, 231, 231, 0.5);
+}
+.headerfont{  
+  color: rgb(251, 255, 0);
+  text-shadow: 2px 2px rgb(4, 0, 255);
+  font-style: oblique;
+  text-align: center;
+  padding: 15px;
 }

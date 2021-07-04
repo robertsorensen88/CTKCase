@@ -24,41 +24,104 @@ searchButton.addEventListener("click" , function(){
         let country = data["sys"]["country"]
         let currentTemperature = parseInt(data["main"]["temp"]);
         let currentFeelsLike = parseInt(data["main"]["feels_like"]);
+        let currentWindSpeed = parseFloat(data["wind"]["speed"]);
+        let currentWindDirection = parseFloat(data["wind"]["deg"]);
+        let currentHumidity = data["main"]["humidity"];
         let weatherDescription = data["weather"][0]["description"];
         let icon = data["weather"][0]["icon"];
         let iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
 
         let weatherHeader = document.createElement("h1");
-        let secondHeader = document.createElement("h3");
         let temperature = document.createElement("p");
         let feelsLike = document.createElement("p");
         let description = document.createElement("p");
+        let humidityHeader = document.createElement("h5");
+        let humidity = document.createElement("p");
+        let windHeader = document.createElement("h5");
+        let windInfo = document.createElement("p");
         let imgicon = document.createElement("img");
         let weatherOutput = document.createElement("div");
         let feelsLikeHeader = document.createElement("h5");
+         
+          if(currentWindDirection > 348.75 || currentWindDirection < 11.25) 
+            currentWindDirection = "N";
 
+          if(currentWindDirection < 33.75 && currentWindDirection > 11.25)
+             currentWindDirection = "NNE";
+            
+          if (currentWindDirection < 56.25 && currentWindDirection > 33.75)
+            currentWindDirection = "NE";
+            
+          if(currentWindDirection < 78.75 && currentWindDirection > 56.25)
+             currentWindDirection = "ENE";
+           
+          if(currentWindDirection < 101.25 && currentWindDirection > 78.75)
+             currentWindDirection = "E";
+           
+          if(currentWindDirection < 123.75 && currentWindDirection > 101.25)
+             currentWindDirection = "ESE";
+            
+          if(currentWindDirection < 146.25 && currentWindDirection > 123.75)
+             currentWindDirection = "SE";
+            
+          if(currentWindDirection < 168.75 && currentWindDirection > 146.25)
+             currentWindDirection = "SSE";
+            
+          if(currentWindDirection < 191.25 && currentWindDirection > 168.75 )
+             currentWindDirection = "S";
+           
+          if(currentWindDirection < 213.75 && currentWindDirection > 191.25)
+             currentWindDirection = "SSW";
+            
+          if(currentWindDirection < 236.25 && currentWindDirection > 213.75 )
+             currentWindDirection = "SW";
+            
+          if(currentWindDirection < 258.75 && currentWindDirection > 236.25)
+             currentWindDirection = "WSW";
+           
+          if(currentWindDirection < 281.25 && currentWindDirection > 258.75)
+             currentWindDirection = "W";
+            
+           if(currentWindDirection < 303.75 && currentWindDirection > 281.25)
+             currentWindDirection = "WNW";
+            
+           if(currentWindDirection < 326.25 && currentWindDirection > 303.75)
+             currentWindDirection = "NW";
+            
+           if(currentWindDirection < 348.75 && currentWindDirection > 326.25)
+             currentWindDirection = "NNW";
+        
+        console.log(currentWindDirection)
         weatherHeader.id = "hId";
         weatherHeader.innerHTML = cityName + ", " + country;
         weatherOutput.id = "weatherOutput";
         weatherOutput.className =
-          "d-flex mw-50 flex-column justify-content-center border border-dark border-3 rounded";
-        feelsLikeHeader.innerHTML= "Feels like";
+          "d-flex mw-50 flex-column justify-content-center border border-primary border-2 rounded opacity-3";
+        feelsLikeHeader.innerHTML= "Feels Like";
         feelsLikeHeader.classList= "border-top border-dark pt-3"
         
         feelsLike.innerHTML = currentFeelsLike + " °C";
         feelsLike.classList = "h4";
-        temperature.id = "tId";
         temperature.className ="h3";
         temperature.innerHTML = currentTemperature + " °C";
-        description.id = "dId";
         description.innerHTML = weatherDescription;
         imgicon.id = "iID";
         imgicon.src = iconUrl;
+        humidityHeader.innerHTML = "Humidity";
+        humidityHeader.className = "border-top border-dark pt-3"
+        humidity.innerHTML = currentHumidity + "%";
+        windHeader.innerHTML = "Wind";
+        windHeader.className="border-top border-dark pt-3"
+        windInfo.innerHTML = "Direction: " + currentWindDirection + "<br> Speed: " + currentWindSpeed + " m/s"
 
         contentfield.appendChild(weatherHeader)
         weatherOutput.appendChild(imgicon)
         weatherOutput.appendChild(temperature);
         weatherOutput.appendChild(description);
+        weatherOutput.appendChild(humidityHeader);
+        weatherOutput.appendChild(humidity);
+        weatherOutput.appendChild(windHeader);
+        weatherOutput.appendChild(windInfo);
         weatherOutput.appendChild(feelsLikeHeader);
         weatherOutput.appendChild(feelsLike);
         contentfield.appendChild(weatherOutput);
@@ -121,7 +184,7 @@ searchButton.addEventListener("click" , function(){
         forecastIcon.id ="iID";
         forecastOutput.id = "forecastWindows";
         forecastOutput.className =
-          "mb-4 d-flex mw-50 flex-column justify-content-center border border-dark border-3 rounded";
+          "mb-4 d-flex mw-50 flex-column justify-content-center border border-primary border-2 rounded opacity-3";
         forecastTemperature.classList="h3";
         forecastTemperature.innerHTML =
           parseInt(getWeatherForecastTemperature) + " °C";
